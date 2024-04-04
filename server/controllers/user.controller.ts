@@ -11,8 +11,9 @@ export const userController: {
 } = {
   async create(req, res, next) {
     try {
-      await userService.createUser(req.body);
+      const {otpExpire,otp,password,...rest} = await userService.createUser(req.body);
       res.json({
+        data:{...rest },
         success: true,
         message: `Registration was successful. Thank you for signing up.`,
       });
@@ -22,8 +23,7 @@ export const userController: {
   },
   async login(req, res, next) {
     try {
-      const user = await userService.loginUser(req.body);
-      const { data, token } = user;
+      const {data, token} = await userService.loginUser(req.body);
       const { password, ...rest } = data;
       res.json({
         success: true,

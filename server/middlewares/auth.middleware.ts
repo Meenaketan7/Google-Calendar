@@ -5,7 +5,10 @@ import { configs, prisma } from "../configs";
 import jwt from "jsonwebtoken";
 
 interface JwtPayload {
-  userId: string;
+  id:string,
+  email: string,
+  name: string,
+  role: string,
 }
 declare global {
   namespace Express {
@@ -23,10 +26,12 @@ export const verifyToken = async (req: Request) => {
   const token = authorizationHeader.split(" ")[1];
   if (!token) throw new Unauthorized("Token is missing");
 
+
   const decodedToken = jwt.verify(token, configs.JWT_SECRET) as JwtPayload;
+  
 
   const user = await prisma.user.findUnique({
-    where: { id: decodedToken.userId },
+    where: { id: decodedToken.id },
   });
 
   if (!user) throw new Unauthorized("User not found");
@@ -66,4 +71,5 @@ export const authenticate = {
       next(error);
     }
   },
+  
 };

@@ -26,4 +26,5 @@ router.put(
 
 router.get("/self", authenticate.allUser, userController.self);
 
+
 export default router;

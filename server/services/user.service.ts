@@ -9,6 +9,7 @@ import {
 } from "http-errors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateUniqueToken } from "../utils";
 
 export const userService = {
   async createUser(inputData: Prisma.UserCreateInput) {
@@ -18,7 +19,7 @@ export const userService = {
       },
     });
     if (isEmailExists) throw new Conflict("Email already exists!");
-    const { password, ...rest } = inputData;
+    const { password,isVerified, ...rest } = inputData;
     const hashedPassword = await bcrypt.hash(
       password || configs.USER_PASSWORD,
       10
@@ -27,6 +28,7 @@ export const userService = {
       data: {
         ...rest,
         password: hashedPassword,
+        isVerified: true
       },
     });
     return user;
@@ -46,12 +48,11 @@ export const userService = {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new Unauthorized("Invalid password");
 
-    const token = jwt.sign({ userId: user.id }, configs.JWT_SECRET);
+    const token = await generateUniqueToken(user.id,user.email, user.role, user.name);
     await prisma.user.update({
       where: { id: user.id },
       data: { lastLogin: new Date().toISOString() },
     });
-
     return {
       data: user,
       token,
