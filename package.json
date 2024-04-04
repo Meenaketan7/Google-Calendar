@@ -9,6 +9,7 @@
     "start": "node ./build",
     "prisma-studio": "prisma studio",
     "prisma-generate": "prisma generate"
+    
   },
   "author": "",
   "license": "ISC",
