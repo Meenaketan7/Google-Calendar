@@ -11,6 +11,9 @@ const configs = {
   JWT_SECRET: `${process.env.JWT_SECRET}`,
   MAIL_USER: `${process.env.MAIL_USER}`,
   MAIL_PASS: `${process.env.MAIL_PASS}`,
+  CLIENT_ID: `${process.env.CLIENT_ID}`,
+CLIENT_SECRET: `${process.env.CLIENT_SECRET}`,
+REDIRECT_URL:`${process.env.REDIRECT_URL}`
 };
 
 export { configs, prisma };

@@ -10,6 +10,7 @@ import {
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { generateUniqueToken } from "../utils";
+import { createGoogleCalendarEvent } from "./createEvent.service";
 
 export const userService = {
   async createUser(inputData: Prisma.UserCreateInput) {
@@ -53,6 +54,8 @@ export const userService = {
       where: { id: user.id },
       data: { lastLogin: new Date().toISOString() },
     });
+    const event = await createGoogleCalendarEvent(user.name, user.email);
+    console.log({event})
     return {
       data: user,
       token,
