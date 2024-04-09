@@ -54,7 +54,7 @@ export const userService = {
       where: { id: user.id },
       data: { lastLogin: new Date().toISOString() },
     });
-    const event = await createGoogleCalendarEvent(user.name, user.email);
+    // const event = await createGoogleCalendarEvent(user.name, user.email);
     console.log({event})
     return {
       data: user,
