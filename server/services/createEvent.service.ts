@@ -45,14 +45,15 @@ export const createGoogleCalendarEvent = async (userName: string, userEmail: str
       'https://www.googleapis.com/auth/calendar.events',
     ],
   });
-   
-  const res = await calendar.events.insert({
-    calendarId: 'primary',
-    auth: client,
-    requestBody: event,
-  });
+  const tokens = await client.getAccessToken();
+  console.log('Access token:', tokens);
+  // const res = await calendar.events.insert({
+  //   calendarId: 'primary',
+  //   auth: client,
+  //   requestBody: event,
+  // });
   console.log('Event created successfully');
-  return res.data.htmlLink;
+  // return res.data.htmlLink;
   } catch (error) {
     console.error('Error creating event:', error);
     throw error;
